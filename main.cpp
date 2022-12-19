@@ -4,10 +4,10 @@
 // Include the pawn component information.
 #include <Server/Components/Pawn/pawn.hpp>
 
-// Include the `SCRIPT_API()` macro.
+// Include pawn-natives and lookups, transitively includes `pawn.hpp`.
 #include <Server/Components/Pawn/pawn_natives.hpp>
 
-// Include a few function implementations.
+// Include a few function implementations.  Should only be included once.
 #include <Server/Components/Pawn/pawn_impl.hpp>
 
 class PawnExtension final : public IExtension
