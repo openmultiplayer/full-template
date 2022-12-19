@@ -15,8 +15,13 @@ class PawnExtension : public IExtension
 {
 private:
 	int data_ = 0;
+
 public:
 	PROVIDE_EXT_UID(/* UID GOES HERE */);
+
+	virtual ~PawnExtension()
+	{
+	}
 
 	void setData(int value)
 	{
@@ -83,7 +88,7 @@ public:
 
 	void onPlayerConnect(IPlayer& player) override
 	{
-		player.addExtension(new PawnExtension(player), true);
+		player.addExtension(new PawnExtension(), true);
 	}
 
 	void onReady() override
