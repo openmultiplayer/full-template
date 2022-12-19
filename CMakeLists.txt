@@ -4,6 +4,14 @@ project(pawn-template LANGUAGES C CXX VERSION 0.0.1)
 add_subdirectory(sdk)
 add_subdirectory(network)
 
+include_directories(
+		pawn-natives
+		pawn/source
+		pawn/source/linux
+)
+
+add_definitions(-DHAVE_STDINT_H=1)
+
 add_library(${PROJECT_NAME} SHARED main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

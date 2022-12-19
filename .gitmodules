@@ -7,3 +7,6 @@
 [submodule "pawn-natives"]
 	path = pawn-natives
 	url = https://github.com/openmultiplayer/pawn-natives
+[submodule "pawn"]
+	path = pawn
+	url = https://github.com/openmultiplayer/compiler
