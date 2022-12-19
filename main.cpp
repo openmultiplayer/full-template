@@ -11,7 +11,37 @@
 #include <NativesMain.hpp>
 #include <Server/Components/Pawn/pawn_impl.hpp>
 
-class PawnTemplate final : public IComponent, public PawnEventHandler
+class PawnExtension : public IExtension
+{
+private:
+	int data_ = 0;
+public:
+	PROVIDE_EXT_UID(/* UID GOES HERE */);
+
+	void setData(int value)
+	{
+		data_ = value;
+	}
+
+	int getData() const
+	{
+		return data_;
+	}
+
+	void freeExtension() override
+	{
+		// Deletes the extension.
+		delete this;
+	}
+
+	void reset() override
+	{
+		// Resets data when the mode changes.
+		data_ = 0;
+	}
+};
+
+class PawnTemplate final : public IComponent, public PawnEventHandler, public PlayerEventHandler
 {
 private:
 	ICore* core_ = nullptr;
@@ -33,8 +63,9 @@ public:
 
 	void onLoad(ICore* c) override
 	{
-		// Cache core, player pool here
+		// Cache core, listen to player events.
 		core_ = c;
+		core_->getPlayers().getEventDispatcher().addEventHandler(this);
 		c->printLn("Pawn component template loaded.");
 	}
 
@@ -48,6 +79,11 @@ public:
 			setAmxFunctions(pawn_->getAmxFunctions());
 			pawn_->getEventDispatcher().addEventHandler(this);
 		}
+	}
+
+	void onPlayerConnect(IPlayer& player) override
+	{
+		player.addExtension(new PawnExtension(player), true);
 	}
 
 	void onReady() override
@@ -81,6 +117,10 @@ public:
 		{
 			pawn_->getEventDispatcher().removeEventHandler(this);
 		}
+		if (core_)
+		{
+			core_->getPlayers().getEventDispatcher().removeEventHandler(this);
+		}
 	}
 
 	void free() override
@@ -98,4 +138,23 @@ public:
 COMPONENT_ENTRY_POINT()
 {
 	return new PawnTemplate();
+}
+
+SCRIPT_API(SetPawnData, bool(IPlayer& player, int value))
+{
+	if (auto* data = queryExtension<PawnExtension>(player))
+	{
+		data->setData(value);
+		return true;
+	}
+	return false;
+}
+
+SCRIPT_API(GetPawnData, int(IPlayer& player))
+{
+	if (auto* data = queryExtension<PawnExtension>(player))
+	{
+		return data->getData();
+	}
+	return 0;
 }
