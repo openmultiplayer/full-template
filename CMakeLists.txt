@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.19)
 project(pawn-template LANGUAGES C CXX VERSION 0.0.1)
 
+set(CMAKE_CXX_STANDARD 17)
+
 add_subdirectory(sdk)
 add_subdirectory(network)
 
 include_directories(
-		pawn-natives
+		.
 		pawn/source
 		pawn/source/linux
 )

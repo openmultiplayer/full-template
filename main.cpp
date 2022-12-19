@@ -5,23 +5,18 @@
 #include <Server/Components/Pawn/pawn.hpp>
 
 // Include the `SCRIPT_API()` macro.
-#include <NativeFunc.hpp>
+#include <Server/Components/Pawn/pawn_natives.hpp>
 
 // Include a few function implementations.
-#include <NativesMain.hpp>
 #include <Server/Components/Pawn/pawn_impl.hpp>
 
-class PawnExtension : public IExtension
+class PawnExtension final : public IExtension
 {
 private:
 	int data_ = 0;
 
 public:
 	PROVIDE_EXT_UID(/* UID GOES HERE */);
-
-	virtual ~PawnExtension()
-	{
-	}
 
 	void setData(int value)
 	{
@@ -71,7 +66,8 @@ public:
 		// Cache core, listen to player events.
 		core_ = c;
 		core_->getPlayers().getEventDispatcher().addEventHandler(this);
-		c->printLn("Pawn component template loaded.");
+		core_->printLn("Pawn component template loaded.");
+		setAmxLookups(c);
 	}
 
 	void onInit(IComponentList* components) override
@@ -82,12 +78,14 @@ public:
 		if (pawn_)
 		{
 			setAmxFunctions(pawn_->getAmxFunctions());
+			setAmxLookups(components);
 			pawn_->getEventDispatcher().addEventHandler(this);
 		}
 	}
 
 	void onPlayerConnect(IPlayer& player) override
 	{
+		core_->printLn("On player connect.");
 		player.addExtension(new PawnExtension(), true);
 	}
 
@@ -112,6 +110,7 @@ public:
 		{
 			pawn_ = nullptr;
 			setAmxFunctions();
+			setAmxLookups();
 		}
 	}
 

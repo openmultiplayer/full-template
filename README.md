@@ -12,7 +12,7 @@ https://open.mp/uid
 ## Required Tools
 
 * [CMake 3.19+](https://cmake.org/)
-* [Conan 1.33+](https://conan.io/)
+* [Conan 1.53+](https://conan.io/)
 * [Visual Studio 2019+](https://www.visualstudio.com/) (on Windows)
 * Clang (on Linux)
 
