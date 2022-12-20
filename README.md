@@ -1,7 +1,7 @@
  open.mp Pawn Compnent Template
 ================================
 
-This is a simple component start point template.  It demonstrates a few uses of the SDK such as listening to vehicle creation events and calling methods in other components (mainly the query component), and these abilities can be built upon almost infinitely.  The default code counts the number of vehicles in the server and displays that in the server browser.
+This is a simple component start point template.  It demonstrates how to declare pawn functions using the *pawn-natives* derived syntax (old methods are still available) and add per-player data managed by the server.
 
 ## UID
 
