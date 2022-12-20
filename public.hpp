@@ -13,7 +13,7 @@
 #include "public.hpp"
 
 class WeatherRegion final
-	// This class is an implementation of the publically shared `IWeatherRegion` interface.
+	// This class is an implementation of the publicly shared `IWeatherRegion` interface.
 	: public IWeatherRegion
 {
 private:
@@ -32,7 +32,7 @@ public:
 
 // If this data is to be used in other components only share an ABI stable base class.
 class WeatherExtension final
-	// This class is an implementation of the publically shared `IWeatherExtension` interface.
+	// This class is an implementation of the publicly shared `IWeatherExtension` interface.
 	: public IWeatherExtension
 {
 private:
@@ -48,7 +48,7 @@ public:
 
 // If this data is to be used in other components only share an ABI stable base class.
 class WeatherComponent final
-	// This class is an implementation of the publically shared `IWeatherComponent` interface.
+	// This class is an implementation of the publicly shared `IWeatherComponent` interface.
 	: public IWeatherComponent
 	// The implementation includes player connection events to know when new players join.
 	, public PlayerConnectEventHandler
