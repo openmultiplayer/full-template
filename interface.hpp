@@ -9,12 +9,54 @@
 // Required for most of open.mp.
 #include <sdk.hpp>
 
+enum class E_WEATHER
+{
+	SUNNY,
+	RAINING,
+	WINDY,
+	SNOWING,
+	SLEET,
+	CLOUDY,
+	HOT,
+	FOGGY,
+	STORMY,
+	DRIZZLING,
+};
+
+// This is just a generic container, it doesn't inherit from anything.  For most components this
+// represents the most important part - the entity that the component manages.  Be it objects,
+// checkpoints, text draws, or weather regions.
+struct IWeatherRegion
+{
+	virtual StringView getName() = 0;
+	virtual StringView getLocation() = 0;
+	virtual bool weatherChanged() = 0;
+	virtual E_WEATHER getWeather() = 0;
+};
+
 // If this data is to be used in other components only share an ABI stable base class.
-struct IPawnExtension : IExtension
+struct IWeatherExtension : IExtension
 {
 	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
 	PROVIDE_EXT_UID(/* UID GOES HERE */);
 
-	// Just one example public method.
-	virtual void setData(int value) = 0;
+	// Public methods to get and set this player's weather zone.
+	virtual IWeatherRegion* getWeatherRegion() = 0;
+
+	virtual void setWeatherRegion(IWeatherRegion*) = 0;
+};
+
+// If this data is to be used in other components only share an ABI stable base class.
+struct IWeatherComponent : IComponent
+{
+	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
+	PROVIDE_EXT_UID(/* UID GOES HERE */);
+
+	// Public methods to get and set this player's weather zone.
+	virtual IWeatherRegion* createWeatherRegion(StringView name, StringView location) = 0;
+
+	// Public methods to get and set this player's weather zone.
+	virtual void destroyWeatherRegion(IWeatherRegion*) = 0;
+
+	virtual IWeatherRegion* getWeatherRegion(StringView name) = 0;
 };
