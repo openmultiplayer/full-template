@@ -62,3 +62,10 @@ struct IWeatherComponent : IComponent
 
 	virtual IWeatherRegion* getWeatherRegion(StringView name) = 0;
 };
+
+// If other components want to subscribe to our weather event they must implement this interface.
+struct WeatherEventHandler
+{
+	// There's only one event - that triggered when the weather in a region changes.
+	virtual onWeatherChange(IWeatherRegion* where, E_WEATHER oldWeather, E_WEATHER newWeather) = 0;
+};
