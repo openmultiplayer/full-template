@@ -66,7 +66,7 @@ public:
 // As with the extension this should use an abstract interface if it is to be passed to other
 // components.  Like the files in `<Server/Components/>` you would share only this base class and
 // keep the implementation private.
-class PawnTemplate final : public IComponent, public PawnEventHandler, public PlayerEventHandler
+class PawnTemplate final : public IComponent, public PawnEventHandler, public PlayerConnectEventHandler
 {
 private:
 	// Hold a reference to the main server core.
@@ -89,7 +89,7 @@ public:
 		}
 		if (core_)
 		{
-			core_->getPlayers().getEventDispatcher().removeEventHandler(this);
+			core_->getPlayers().getPlayerConnectDispatcher().removeEventHandler(this);
 		}
 	}
 
@@ -127,7 +127,7 @@ public:
 		// Cache core, listen to player events.
 		core_ = c;
 		// Register this component as wanting to be informed when a player (dis)connects.
-		core_->getPlayers().getEventDispatcher().addEventHandler(this);
+		core_->getPlayers().getPlayerConnectDispatcher().addEventHandler(this);
 		core_->printLn("Pawn component template loaded.");
 		setAmxLookups(core_);
 	}
