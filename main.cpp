@@ -22,15 +22,15 @@
 struct IPawnExtension : IExtension
 {
 	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
-	PROVIDE_EXT_UID(2/* UID GOES HERE */);
+	PROVIDE_EXT_UID(/* UID GOES HERE */);
 
 	// Just one example public method.
 	virtual void setData(int value) = 0;
-}
+};
 
 // This is a player data extension.  It is created when a player connects and destroyed when they
 // disconnect.  Like a component it also needs a UID, also get from https://open.mp/uid
-class PawnExtension final : public IExtension
+class PawnExtension final : public IPawnExtension
 {
 private:
 	// Any data, this is just a normal class.
@@ -77,7 +77,7 @@ private:
 
 public:
 	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
-	PROVIDE_UID(3/* UID GOES HERE */);
+	PROVIDE_UID(/* UID GOES HERE */);
 
 	// When this component is destroyed we need to tell any linked components this it is gone.
 	~PawnTemplate()
