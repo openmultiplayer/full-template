@@ -12,21 +12,11 @@
 // Include the pawn component information.
 #include <Server/Components/Pawn/pawn.hpp>
 
-// Include pawn-natives macros (`SCRIPT_API`) and lookups (`IPlayer&`).
-#include <Server/Components/Pawn/pawn_natives.hpp>
-
 // Include a few function implementations.  Should only be included once.
 #include <Server/Components/Pawn/pawn_impl.hpp>
 
-// If this data is to be used in other components only share an ABI stable base class.
-struct IPawnExtension : IExtension
-{
-	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
-	PROVIDE_EXT_UID(/* UID GOES HERE */);
-
-	// Just one example public method.
-	virtual void setData(int value) = 0;
-};
+// Include the globally shared definitions for this component.
+#include "interface.hpp"
 
 // This is a player data extension.  It is created when a player connects and destroyed when they
 // disconnect.  Like a component it also needs a UID, also get from https://open.mp/uid
@@ -182,39 +172,4 @@ public:
 COMPONENT_ENTRY_POINT()
 {
 	return new PawnTemplate();
-}
-
-// `SCRIPT_API` is an enhanced wrapper around the old *pawn-natives* system:
-//
-//   https://github.com/Y-Less/pawn-natives
-//
-// `IPlayer` is a reference to a player already resolved from a `playerid` in the calling pawn code.
-// Many components define lookups to convert from IDs to direct references to their entity
-// instances, and players, arrays, strings, and more are all handled by default (including return
-// values).  This saves all the old native boilerplate required for converting to and from the
-// `params` array.
-SCRIPT_API(SetPawnData, bool(IPlayer& player, int value))
-{
-	// Try get a reference to this player's custom data.
-	if (auto* data = queryExtension<IPawnExtension>(player))
-	{
-		// Call a method on the extension.
-		data->setData(value);
-		return true;
-	}
-	// Natives return `0`/`false` by default if parameter lookups fail.
-	return false;
-}
-
-// Note that `amx` and `params` are still available in these natives via `GetAMX` and `GetParams`
-// and may be needed for vararg functions like `format` or `SetTimerEx`.
-SCRIPT_API(GetPawnData, int(IPlayer& player))
-{
-	// Try get a reference to this player's custom data.
-	if (auto* data = queryExtension<IPawnExtension>(player))
-	{
-		// Within this component we can use the private API as well.
-		return reinterpret_cast<PawnExtension*>(data)->getData();
-	}
-	return 0;
 }

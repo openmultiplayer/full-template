@@ -14,7 +14,10 @@ include_directories(
 
 add_definitions(-DHAVE_STDINT_H=1)
 
-add_library(${PROJECT_NAME} SHARED main.cpp)
+add_library(${PROJECT_NAME} SHARED
+	main.cpp
+	natives.cpp
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     OMP-SDK
