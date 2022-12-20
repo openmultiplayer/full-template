@@ -9,54 +9,61 @@
 // Required for most of open.mp.
 #include <sdk.hpp>
 
-enum class E_WEATHER
-{
-	SUNNY,
-	RAINING,
-	WINDY,
-	SNOWING,
-	SLEET,
-	CLOUDY,
-	HOT,
-	FOGGY,
-	STORMY,
-	DRIZZLING,
-};
+// This is the private implementation of the public interface.  We must know the interface.
+#include "public.hpp"
 
-// This is just a generic container, it doesn't inherit from anything.  For most components this
-// represents the most important part - the entity that the component manages.  Be it objects,
-// checkpoints, text draws, or weather regions.
-struct IWeatherRegion
+class WeatherRegion final
+	// This class is an implementation of the publically shared `IWeatherRegion` interface.
+	: public IWeatherRegion
 {
-	virtual StringView getName() = 0;
-	virtual StringView getLocation() = 0;
-	virtual bool weatherChanged() = 0;
-	virtual E_WEATHER getWeather() = 0;
+private:
+	int id_;
+	int currentWeather_;
+
+public:
+	// Implementations of the various methods from the public API.
+	StringView getName() override;
+	StringView getLocation() override;
+	bool weatherChanged() override;
+	E_WEATHER getWeather() override;
+
+	// More methods to be used only in this component (internal methods).  Implementation details.
 };
 
 // If this data is to be used in other components only share an ABI stable base class.
-struct IWeatherExtension : IExtension
+class WeatherExtension final
+	// This class is an implementation of the publically shared `IWeatherExtension` interface.
+	: public IWeatherExtension
 {
-	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
-	PROVIDE_EXT_UID(/* UID GOES HERE */);
+private:
+	IWeatherRegion* region_;
 
-	// Public methods to get and set this player's weather zone.
-	virtual IWeatherRegion* getWeatherRegion() = 0;
+public:
+	// Implementations of the various methods from the public API.
+	IWeatherRegion* getWeatherRegion() override;
+	void setWeatherRegion(IWeatherRegion*) override;
 
-	virtual void setWeatherRegion(IWeatherRegion*) = 0;
+	// Component-private methods (internal methods) would go here.
 };
 
 // If this data is to be used in other components only share an ABI stable base class.
-struct IWeatherComponent : IComponent
+class WeatherComponent final
+	// This class is an implementation of the publically shared `IWeatherComponent` interface.
+	: public IWeatherComponent
+	// The implementation includes player connection events to know when new players join.
+	, public PlayerConnectEventHandler
+	// The implementation includes pawn script events to know when new scripts load.
+	, public PawnEventHandler
+	// The implementation includes server tick events to periodically check for weather updates.
+	, public UpdateEventHandler
 {
-	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
-	PROVIDE_EXT_UID(/* UID GOES HERE */);
+private:
 
-	// Public methods to get and set this player's weather zone.
-	virtual IWeatherRegion* createWeatherRegion(StringView name, StringView location) = 0;
+public:
+	// Implementations of the various methods from the public API.
+	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override;
+	void destroyWeatherRegion(IWeatherRegion*) override;
+	IWeatherRegion* getWeatherRegion(StringView name) override;
 
-	// Public methods to get and set this player's weather zone.
-	virtual void destroyWeatherRegion(IWeatherRegion*) = 0;
-
-	virtual IWeatherRegion* getWeatherRegion(StringView name) = 0;
+	// More methods to be used only in this component, with more implementation details knowledge.
 };
