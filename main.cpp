@@ -64,6 +64,22 @@ private:
 
 	// Hold a reference to the pawn component so methods in it can be called.
 	IPawnComponent* pawn_ = nullptr;
+	
+	void callOnWeatherChange(WeatherRegion* where, E_WEATHER oldWeather, E_WEATHER newWeather)
+	{
+		// TODO: Event.
+		// Call in pawn.
+		if (auto s = pawn_->mainScript())
+		{
+			// Call in the main script (gamemode) first.
+			s->Call("OnWeatherChange", where->getID(), (int)oldWeather, (int)newWeather);
+		}
+		for (auto s : pawn_->sideScripts())
+		{
+			// Call in the side scripts (filterscripts) second.
+			s->Call("OnWeatherChange", where->getID(), (int)oldWeather, (int)newWeather);
+		}
+	}
 
 public:
 	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
