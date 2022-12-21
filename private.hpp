@@ -31,8 +31,11 @@ enum class E_WEATHER
 struct IWeatherRegion
 {
 	virtual StringView getName() = 0;
+
 	virtual StringView getLocation() = 0;
+
 	virtual bool weatherChanged() = 0;
+
 	virtual E_WEATHER getWeather() = 0;
 };
 
@@ -42,7 +45,7 @@ struct IWeatherExtension : IExtension
 	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
 	PROVIDE_EXT_UID(/* UID GOES HERE */);
 
-	// Public methods to get and set this player's weather zone.
+	// Public methods to get and set this player's weather region.
 	virtual IWeatherRegion* getWeatherRegion() = 0;
 
 	virtual void setWeatherRegion(IWeatherRegion*) = 0;
@@ -54,12 +57,13 @@ struct IWeatherComponent : IComponent
 	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
 	PROVIDE_EXT_UID(/* UID GOES HERE */);
 
-	// Public methods to get and set this player's weather zone.
+	// Public methods to get and set this player's weather region.
 	virtual IWeatherRegion* createWeatherRegion(StringView name, StringView location) = 0;
 
-	// Public methods to get and set this player's weather zone.
+	// Public methods to get and set this player's weather region.
 	virtual void destroyWeatherRegion(IWeatherRegion*) = 0;
 
+	// Look up a region by name.
 	virtual IWeatherRegion* getWeatherRegion(StringView name) = 0;
 };
 

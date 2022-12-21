@@ -23,8 +23,11 @@ private:
 public:
 	// Implementations of the various methods from the public API.
 	StringView getName() override;
+	
 	StringView getLocation() override;
+	
 	bool weatherChanged() override;
+	
 	E_WEATHER getWeather() override;
 
 	// More methods to be used only in this component (internal methods).  Implementation details.
@@ -41,9 +44,12 @@ private:
 public:
 	// Implementations of the various methods from the public API.
 	IWeatherRegion* getWeatherRegion() override;
+	
 	void setWeatherRegion(IWeatherRegion*) override;
 
-	// Component-private methods (internal methods) would go here.
+	// Required extension methods.
+
+	// Component-private methods (internal methods) go here.
 };
 
 // If this data is to be used in other components only share an ABI stable base class.
@@ -55,15 +61,29 @@ class WeatherComponent final
 	// The implementation includes pawn script events to know when new scripts load.
 	, public PawnEventHandler
 	// The implementation includes server tick events to periodically check for weather updates.
-	, public UpdateEventHandler
+	, public CoreEventHandler
 {
 private:
 
 public:
 	// Implementations of the various methods from the public API.
 	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override;
+	
 	void destroyWeatherRegion(IWeatherRegion*) override;
+	
 	IWeatherRegion* getWeatherRegion(StringView name) override;
 
+	// Required component methods.
+	
+	// Connect event methods.
+	void onPlayerConnect(IPlayer& player) override;
+	
+	// Pawn event methods.
+	void onAmxLoad(IPawnScript& script) override;
+	void onAmxUnload(IPawnScript& script) override {}
+
+	// Update event methods.
+	void onTick(Microseconds elapsed, TimePoint now) override;
+	
 	// More methods to be used only in this component, with more implementation details knowledge.
 };
