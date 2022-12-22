@@ -8,10 +8,10 @@
 
 #include <cstdlib>
 
-// This is just a component lookup, we aren't going to actually implement a full weather API
-// connection.  This class merely serves as a placeholder for a real-world usage, because this part
+// This is just a placeholder for some real world weather lookup API.  We aren't going to bother
+// with a full implementation as this class merely serves as an example of real-world usage.  It
 // isn't important to demonstrating the open.mp component SDK.
-class WeatherLookup
+class WeatherAPI
 {
 private:
 	// 10 possibilities:

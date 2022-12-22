@@ -18,6 +18,9 @@
 // Include the globally shared definitions for this component.
 #include "interface.hpp"
 
+// Include the binary-local implementation for this component.
+#include "implementation.hpp"
+
 // This is a player data extension.  It is created when a player connects and destroyed when they
 // disconnect.  Like a component it also needs a UID, also get from https://open.mp/uid
 class PawnExtension final : public IPawnExtension

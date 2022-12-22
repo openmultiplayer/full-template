@@ -10,7 +10,7 @@
 #include <sdk.hpp>
 
 // This is the private implementation of the public interface.  We must know the interface.
-#include "public.hpp"
+#include "interface.hpp"
 
 class WeatherRegion final
 	// This class is an implementation of the publicly shared `IWeatherRegion` interface.
