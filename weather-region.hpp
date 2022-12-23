@@ -13,7 +13,7 @@
 #include "interface.hpp"
 
 // This entity holds server data, but must use an external service for weather reporting.
-#include "weather-api.hpp"
+#include "api.hpp"
 
 // Import open.mp structures that aren't ABI safe.
 using Impl;
@@ -32,50 +32,16 @@ private:
 
 public:
 	// Implementations of the various methods from the public API.
-	StringView getName() override
-	{
-		return name_;
-	}
+	StringView getName() override;
 
-	StringView getLocation() override
-	{
-		return location_;
-	}
+	StringView getLocation() override;
 	
-	bool weatherChanged() override
-	{
-		// Call the API to get the latest weather in this region.
-		int weather = api_.getCurrentWeather();
-
-		// Has the weather changed?
-		if (weather != currentWeather_)
-		{
-			// Yes, record the new one.
-			currentWeather_ = weather;
-			return true;
-		}
-		return false;
-	}
+	bool weatherChanged() override;
 	
-	E_WEATHER getWeather() override
-	{
-		// Get the last weather retreived from the real world weather API.
-		return reinterpret_cast<E_WEATHER>(currentWeather_);
-	}
+	E_WEATHER getWeather() override;
 
 	// More methods to be used only in this component (internal methods).  Implementation details.
-	WeatherRegion(int id, String name, String location)
-		: api_()
-		, id_(id)
-		, currentWeather_(0)
-		, name_(name)
-		, location_(location)
-	{
-	}
+	WeatherRegion(int id, String name, String location);
 	
-	int getID() const
-	{
-		// Get the internal ID for this region, used to reference it in pawn.
-		return id_;
-	}
+	int getID() const;
 };

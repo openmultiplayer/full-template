@@ -22,30 +22,14 @@ private:
 
 public:
 	// Implementations of the various methods from the public API.
-	IWeatherRegion* getWeatherRegion() override
-	{
-		// Get the player's current weather region.
-		return region_;
-	}
+	IWeatherRegion* getWeatherRegion() override;
 	
-	void setWeatherRegion(IWeatherRegion* region) override
-	{
-		// Get the player's current weather region.
-		region_ = region;
-	}
+	void setWeatherRegion(IWeatherRegion* region) override;
 
 	// Required extension methods.
-	void freeExtension() override
-	{
-		// Delete this extension.
-		delete this;
-	}
+	void freeExtension() override;
 
-	void reset() override
-	{
-		// Reset data when the main mode changes.
-		region_ = nullptr;
-	}
+	void reset() override;
 
 	// Component-private methods (internal methods) go here.
 };

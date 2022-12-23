@@ -12,9 +12,6 @@
 // Include the pawn component information.
 #include <Server/Components/Pawn/pawn.hpp>
 
-// Include a few function implementations.  Should only be included once.
-#include <Server/Components/Pawn/pawn_impl.hpp>
-
 // Include the globally shared definitions for this component.
 #include "interface.hpp"
 

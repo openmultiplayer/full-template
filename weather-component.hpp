@@ -32,132 +32,42 @@ private:
 
 public:
 	// Implementations of the various methods from the public API.
-	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override
-	{
-		
-	}
+	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override;
 	
-	void destroyWeatherRegion(IWeatherRegion*) override
-	{
-		
-	}
+	void destroyWeatherRegion(IWeatherRegion*) override;
 	
-	IWeatherRegion* getWeatherRegion(StringView name) override
-	{
-		
-	}
+	IWeatherRegion* getWeatherRegion(StringView name) override;
 
 	// Required component methods.
-	StringView componentName() const override
-	{
-		return "Full Template";
-	}
+	StringView componentName() const override;
 
-	SemanticVersion componentVersion() const override
-	{
-		return SemanticVersion(0, 0, 1, 0);
-	}
+	SemanticVersion componentVersion() const override;
 
-	void onLoad(ICore* c) override
-	{
-		// Cache core, listen to player events.
-		core_ = c;
-		// Register this component as wanting to be informed when a player (dis)connects.
-		core_->getPlayers().getPlayerConnectDispatcher().addEventHandler(this);
-		// Register this component as wanting to be informed when a tick happens.
-		core_->.getCoreDispatcher().addEventHandler(this);
-		// Record the reference to `ICore` used by *pawn-natives*.
-		setAmxLookups(core_);
-		// Done.
-		core_->printLn("Full component template loaded.");
-	}
+	void onLoad(ICore* c) override;
 
-	void onInit(IComponentList* components) override
-	{
-		// Cache components, add event handlers here.
-		pawn_ = components->queryComponent<IPawnComponent>();
+	void onInit(IComponentList* components) override;
 
-		if (pawn_)
-		{
-			// For the legacy `amx_` C API this call sets the correct pointers so that pawn
-			// function calls call the original versions within the server.
-			setAmxFunctions(pawn_->getAmxFunctions());
-			// For the pawn-natives system this call sets the various component references used for
-			// parameter value lookups.
-			setAmxLookups(components);
-			// Register this component as wanting to be informed when a script is loaded.
-			pawn_->getEventDispatcher().addEventHandler(this);
-		}
-	}
+	void onReady() override;
 
-	void onReady() override
-	{
-		// Fire events here at earliest.
-	}
+	void onFree(IComponent* component) override;
 
-	void onFree(IComponent* component) override
-	{
-		// Invalidate pawn pointer so it can't be used past this point.
-		if (component == pawn_)
-		{
-			// Remove the internal pointer.
-			pawn_ = nullptr;
-			// Remove the pointers to the various `amx_` function implementations.
-			setAmxFunctions();
-			// Remove all pool lookup pointers.
-			setAmxLookups();
-		}
-	}
+	void free() override;
 
-	void free() override
-	{
-		// Deletes the component.
-		delete this;
-	}
-
-	void reset() override
-	{
-		// Resets data when the mode changes.
-	}
+	void reset() override;
 	
 	// Connect event methods.
-	void onPlayerConnect(IPlayer& player) override
-	{
-		// Allocate a new copy of the extension and register it for `queryExtension` lookups.
-		player.addExtension(new WeatherExtension(), true);
-	}
+	void onPlayerConnect(IPlayer& player) override;
 	
 	// Pawn event methods.
-	void onAmxLoad(IPawnScript& script) override
-	{
-		// Because we're using `SCRIPT_API` this call automatically registers the declared natives.
-		pawn_natives::AmxLoad(script.GetAMX());
-	}
+	void onAmxLoad(IPawnScript& script) override;
 
-	void onAmxUnload(IPawnScript& script) override
-	{
-	}
+	void onAmxUnload(IPawnScript& script) override;
 
 	// Update event methods.
-	void onTick(Microseconds elapsed, TimePoint now) override
-	{
-		
-	}
+	void onTick(Microseconds elapsed, TimePoint now) override;
 	
 	// More methods to be used only in this component, with more implementation details knowledge.
 
 	// When this component is destroyed we need to tell any linked components this it is gone.
-	~WeatherComponent()
-	{
-		// Clean up what you did above.
-		if (pawn_)
-		{
-			pawn_->getEventDispatcher().removeEventHandler(this);
-		}
-		if (core_)
-		{
-			core_->getPlayers().getPlayerConnectDispatcher().removeEventHandler(this);
-			core_->getCoreDispatcher().removeEventHandler(this);
-		}
-	}
+	~WeatherComponent();
 };
