@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  *  This Source Code Form is subject to the terms of the Mozilla Public License,
  *  v. 2.0. If a copy of the MPL was not distributed with this file, You can
@@ -43,7 +45,7 @@ struct IWeatherRegion
 struct IWeatherExtension : IExtension
 {
 	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
-	PROVIDE_EXT_UID(/* UID GOES HERE */);
+	PROVIDE_EXT_UID(5/* UID GOES HERE */);
 
 	// Public methods to get and set this player's weather region.
 	virtual IWeatherRegion* getWeatherRegion() = 0;
@@ -55,7 +57,7 @@ struct IWeatherExtension : IExtension
 struct IWeatherComponent : IComponent
 {
 	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
-	PROVIDE_EXT_UID(/* UID GOES HERE */);
+	PROVIDE_UID(6/* UID GOES HERE */);
 
 	// Public methods to get and set this player's weather region.
 	virtual IWeatherRegion* createWeatherRegion(StringView name, StringView location) = 0;
@@ -71,5 +73,5 @@ struct IWeatherComponent : IComponent
 struct WeatherEventHandler
 {
 	// There's only one event - that triggered when the weather in a region changes.
-	virtual onWeatherChange(IWeatherRegion* where, E_WEATHER oldWeather, E_WEATHER newWeather) = 0;
+	virtual void onWeatherChange(IWeatherRegion* where, E_WEATHER oldWeather, E_WEATHER newWeather) = 0;
 };

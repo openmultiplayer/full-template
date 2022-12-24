@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  *  This Source Code Form is subject to the terms of the Mozilla Public License,
  *  v. 2.0. If a copy of the MPL was not distributed with this file, You can
@@ -11,6 +13,12 @@
 
 // This is the private implementation of the public interface.  We must know the interface.
 #include "interface.hpp"
+
+// Import the pawn event.
+#include <Server/Components/Pawn/pawn.hpp>
+
+// Import open.mp structures that aren't ABI safe.
+using namespace Impl;
 
 // If this data is to be used in other components only share an ABI stable base class.
 class WeatherComponent final

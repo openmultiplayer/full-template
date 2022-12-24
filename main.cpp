@@ -9,9 +9,6 @@
 // Required for most of open.mp.
 #include <sdk.hpp>
 
-// Include the pawn component information.
-#include <Server/Components/Pawn/pawn.hpp>
-
 // Include the globally shared definitions for this component.
 #include "interface.hpp"
 

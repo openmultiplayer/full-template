@@ -6,16 +6,25 @@
  *  The original code is copyright (c) 2022, open.mp team and contributors.
  */
 
-// This is the private implementation of the public interface.  We must know the interface.
-#include "weather-component.hpp"
+// Include pawn-natives macros (`SCRIPT_API`) and lookups (`IPlayer&`).
+#include <Server/Components/Pawn/pawn_natives.hpp>
 
 // Include a few function implementations.  Should only be included once.
 #include <Server/Components/Pawn/pawn_impl.hpp>
 
+// Include the component's definition.
+#include "weather-component.hpp"
+
+// Include the entity's definition.
+#include "weather-region.hpp"
+
+// Include the player data's definition.
+#include "weather-extension.hpp"
+
 // Implementations of the various methods from the public API.
 IWeatherRegion* WeatherComponent::createWeatherRegion(StringView name, StringView location)
 {
-		
+	return nullptr;
 }
 	
 void WeatherComponent::destroyWeatherRegion(IWeatherRegion*)
@@ -25,7 +34,7 @@ void WeatherComponent::destroyWeatherRegion(IWeatherRegion*)
 	
 IWeatherRegion* WeatherComponent::getWeatherRegion(StringView name)
 {
-		
+	return nullptr;
 }
 
 // Required component methods.
@@ -46,7 +55,7 @@ void WeatherComponent::onLoad(ICore* c)
 	// Register this component as wanting to be informed when a player (dis)connects.
 	core_->getPlayers().getPlayerConnectDispatcher().addEventHandler(this);
 	// Register this component as wanting to be informed when a tick happens.
-	core_->.getCoreDispatcher().addEventHandler(this);
+	core_->getEventDispatcher().addEventHandler(this);
 	// Record the reference to `ICore` used by *pawn-natives*.
 	setAmxLookups(core_);
 	// Done.
@@ -128,7 +137,7 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 // More methods to be used only in this component, with more implementation details knowledge.
 
 // When this component is destroyed we need to tell any linked components this it is gone.
-~WeatherComponent::WeatherComponent()
+WeatherComponent::~WeatherComponent()
 {
 	// Clean up what you did above.
 	if (pawn_)
@@ -138,6 +147,6 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 	if (core_)
 	{
 		core_->getPlayers().getPlayerConnectDispatcher().removeEventHandler(this);
-		core_->getCoreDispatcher().removeEventHandler(this);
+		core_->getEventDispatcher().removeEventHandler(this);
 	}
 }
