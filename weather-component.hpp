@@ -20,6 +20,9 @@
 // The code to manage a "pool" (array/collection) of "entities" (things).
 #include <Impl/pool_impl.hpp>
 
+// Include the entity's definition.
+#include "weather-region.hpp"
+
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
 

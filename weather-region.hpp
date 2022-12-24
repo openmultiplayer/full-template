@@ -11,11 +11,15 @@
 // Required for most of open.mp.
 #include <sdk.hpp>
 
+// Get pool ID information.
+#include <Impl/pool_impl.hpp>
+
 // This is the private implementation of the public interface.  We must know the interface.
 #include "interface.hpp"
 
 // This entity holds server data, but must use an external service for weather reporting.
 #include "api.hpp"
+
 
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
@@ -23,11 +27,14 @@ using namespace Impl;
 class WeatherRegion final
 	// This class is an implementation of the publicly shared `IWeatherRegion` interface.
 	: public IWeatherRegion
+	// This is stored in a pool, so needs a standard pool ID.
+	, public PoolIDProvider
+	// Ensure this entity can't be copied without our help.
+	, public NoCopy
 {
 private:
 	WeatherAPI api_;
 	
-	int const id_;
 	int currentWeather_;
 	String name_;
 	String location_;
@@ -41,9 +48,9 @@ public:
 	bool weatherChanged() override;
 	
 	E_WEATHER getWeather() override;
+	
+	int getID() const override;
 
 	// More methods to be used only in this component (internal methods).  Implementation details.
-	WeatherRegion(int id, StringView name, StringView location);
-	
-	int getID() const;
+	WeatherRegion(StringView name, StringView location);
 };

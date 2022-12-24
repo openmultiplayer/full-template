@@ -39,6 +39,8 @@ struct IWeatherRegion
 	virtual bool weatherChanged() = 0;
 
 	virtual E_WEATHER getWeather() = 0;
+
+	virtual int getID() const = 0;
 };
 
 // If this data is to be used in other components only share an ABI stable base class.

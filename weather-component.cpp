@@ -24,7 +24,9 @@
 // Implementations of the various methods from the public API.
 IWeatherRegion* WeatherComponent::createWeatherRegion(StringView name, StringView location)
 {
-	// Pool emplacement automatically assigns and passes an ID.
+	// Pool emplacement automatically assigns and sets an ID.  It calls the constructor of the
+	// concrete implementation, defined in the pool template types, so only this component can
+	// construct weather regions.  All other components see merely the public interface.
 	return pool_.emplace(name, location);
 }
 	
@@ -48,6 +50,8 @@ bool WeatherComponent::destroyWeatherRegion(IWeatherRegion* region)
 	}
 	// Destroy the region.
 	pool_.release(id, false);
+	// Success!
+	return true;
 }
 	
 IWeatherRegion* WeatherComponent::getWeatherRegion(StringView name)
@@ -58,7 +62,7 @@ IWeatherRegion* WeatherComponent::getWeatherRegion(StringView name)
 		// Check if the region matches the name.
 		if (region->getName() == name)
 		{
-			// Yes, return it.
+			// This region has a matching name, return the interface.
 			return region;
 		}
 	}
@@ -71,12 +75,10 @@ IWeatherRegion* WeatherComponent::getWeatherRegion(int id)
 	// Loop over all the created regions.
 	for (auto region : pool_)
 	{
-		// IDs are internal only to the component, so casting is needed.  Only this component can
-		// even manage this cast, because the true class definitions are hidden within it.  Other
-		// components can only ever see the public `IWeatherRegion` interface.
-		if (static_cast<WeatherRegion*>(region)->getID() == id)
+		// Check if the region matches the ID.
+		if (region->getID() == id)
 		{
-			// This region has a matching ID, return it as an interface only.
+			// This region has a matching ID, return the interface.
 			return region;
 		}
 	}
