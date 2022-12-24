@@ -24,16 +24,63 @@
 // Implementations of the various methods from the public API.
 IWeatherRegion* WeatherComponent::createWeatherRegion(StringView name, StringView location)
 {
-	return nullptr;
+	// Pool emplacement automatically assigns and passes an ID.
+	return pool_.emplace(name, location);
 }
 	
-void WeatherComponent::destroyWeatherRegion(IWeatherRegion*)
+bool WeatherComponent::destroyWeatherRegion(IWeatherRegion* region)
 {
-		
+	// Since we are in the component, we don't need to exclusively deal with the external API.
+	int id = static_cast<WeatherRegion*>(region)->getID();
+	// Loop over all the players in the server.
+	for (auto player : core_->getPlayers().entries())
+	{
+		// Look up the custom data we added to the player for this component.
+		if (IWeatherExtension* data = queryExtension<IWeatherExtension>(player))
+		{
+			// Check if they are in the region being destroyed.
+			if (data->getWeatherRegion() == region)
+			{
+				// If so, remove them from it.
+				data->setWeatherRegion(nullptr);
+			}
+		}
+	}
+	// Destroy the region.
+	pool_.release(id, false);
 }
 	
 IWeatherRegion* WeatherComponent::getWeatherRegion(StringView name)
 {
+	// Loop over all the created regions.
+	for (auto region : pool_)
+	{
+		// Check if the region matches the name.
+		if (region->getName() == name)
+		{
+			// Yes, return it.
+			return region;
+		}
+	}
+	// No matching regions found.
+	return nullptr;
+}
+
+IWeatherRegion* WeatherComponent::getWeatherRegion(int id)
+{
+	// Loop over all the created regions.
+	for (auto region : pool_)
+	{
+		// IDs are internal only to the component, so casting is needed.  Only this component can
+		// even manage this cast, because the true class definitions are hidden within it.  Other
+		// components can only ever see the public `IWeatherRegion` interface.
+		if (static_cast<WeatherRegion*>(region)->getID() == id)
+		{
+			// This region has a matching ID, return it as an interface only.
+			return region;
+		}
+	}
+	// No matching regions found.
 	return nullptr;
 }
 

@@ -17,6 +17,9 @@
 // Import the pawn event.
 #include <Server/Components/Pawn/pawn.hpp>
 
+// The code to manage a "pool" (array/collection) of "entities" (things).
+#include <Impl/pool_impl.hpp>
+
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
 
@@ -38,13 +41,18 @@ private:
 	// We use the pawn componet to add and remove script load listeners.
 	IPawnComponent* pawn_;
 
+	// This is a "pool" - it holds a list of "entities".
+	MarkedPoolStorage<WeatherRegion, IWeatherRegion, 1, 1000> pool_;
+
 public:
 	// Implementations of the various methods from the public API.
 	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override;
 	
-	void destroyWeatherRegion(IWeatherRegion*) override;
+	bool destroyWeatherRegion(IWeatherRegion* region) override;
 	
 	IWeatherRegion* getWeatherRegion(StringView name) override;
+
+	IWeatherRegion* getWeatherRegion(int id) override;
 
 	// Required component methods.
 	StringView componentName() const override;

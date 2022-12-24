@@ -43,7 +43,7 @@ public:
 	E_WEATHER getWeather() override;
 
 	// More methods to be used only in this component (internal methods).  Implementation details.
-	WeatherRegion(int id, String name, String location);
+	WeatherRegion(int id, StringView name, StringView location);
 	
 	int getID() const;
 };

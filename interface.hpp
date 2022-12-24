@@ -63,10 +63,13 @@ struct IWeatherComponent : IComponent
 	virtual IWeatherRegion* createWeatherRegion(StringView name, StringView location) = 0;
 
 	// Public methods to get and set this player's weather region.
-	virtual void destroyWeatherRegion(IWeatherRegion*) = 0;
+	virtual bool destroyWeatherRegion(IWeatherRegion* region) = 0;
 
 	// Look up a region by name.
 	virtual IWeatherRegion* getWeatherRegion(StringView name) = 0;
+
+	// Look up a region by name.
+	virtual IWeatherRegion* getWeatherRegion(int id) = 0;
 };
 
 // If other components want to subscribe to our weather event they must implement this interface.
