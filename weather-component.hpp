@@ -50,6 +50,9 @@ private:
 	// The next time to update region's weather.
 	TimePoint nextUpdate_ = TimePoint::min();
 
+	// Create a store for other components to be informed when the weather changes.
+	DefaultEventDispatcher<WeatherEventHandler> eventDispatcher_;
+
 public:
 	// Implementations of the various methods from the public API.
 	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override;
@@ -59,6 +62,8 @@ public:
 	IWeatherRegion* getWeatherRegion(StringView name) override;
 
 	IWeatherRegion* getWeatherRegion(int id) override;
+
+	IEventDispatcher<WeatherEventHandler>& getEventDispatcher() override;
 
 	// Required component methods.
 	StringView componentName() const override;

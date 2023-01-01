@@ -86,6 +86,11 @@ IWeatherRegion* WeatherComponent::getWeatherRegion(int id)
 	return nullptr;
 }
 
+IEventDispatcher<WeatherEventHandler>& WeatherComponent::getEventDispatcher()
+{
+	return eventDispatcher_;
+}
+
 // Required component methods.
 StringView WeatherComponent::componentName() const
 {
@@ -189,12 +194,14 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 			// Call a method on the interface to get the current weather.
 			E_WEATHER prev = region->getWeather();
 			// Call a method on the private implementation to update the weather.
-			bool changed = reinterpret_cast<WeatherRegion*>(region)->updateWeather();
+			bool changed = static_cast<WeatherRegion*>(region)->updateWeather();
 			// Check if the weather has changed.
 			if (changed)
 			{
 				// The weather has changed.
 				E_WEATHER cur = region->getWeather();
+				// Emit an event for other components.
+				eventDispatcher_.dispatch(&WeatherEventHandler::onWeatherChange, *region, prev, cur);
 				// Tell pawn.
 				int id = region->getID();
 				for (IPawnScript* script : pawn_->sideScripts())

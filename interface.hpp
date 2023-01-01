@@ -58,6 +58,13 @@ struct IWeatherExtension : IExtension
 	virtual void setWeatherRegion(IWeatherRegion*) = 0;
 };
 
+// If other components want to subscribe to our weather event they must implement this interface.
+struct WeatherEventHandler
+{
+	// There's only one event - that triggered when the weather in a region changes.
+	virtual void onWeatherChange(IWeatherRegion& where, E_WEATHER oldWeather, E_WEATHER newWeather) = 0;
+};
+
 // If this data is to be used in other components only share an ABI stable base class.
 struct IWeatherComponent : IComponent
 {
@@ -75,11 +82,7 @@ struct IWeatherComponent : IComponent
 
 	// Look up a region by name.
 	virtual IWeatherRegion* getWeatherRegion(int id) = 0;
-};
 
-// If other components want to subscribe to our weather event they must implement this interface.
-struct WeatherEventHandler
-{
-	// There's only one event - that triggered when the weather in a region changes.
-	virtual void onWeatherChange(IWeatherRegion* where, E_WEATHER oldWeather, E_WEATHER newWeather) = 0;
+	// A way for other components to look up and subscribe to this component's events.
+	virtual IEventDispatcher<WeatherEventHandler>& getEventDispatcher() = 0;
 };
