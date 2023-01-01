@@ -10,7 +10,7 @@
 
 #include "api.hpp"
 
-SomeExternalAPI::SomeExternalAPI(std::string_view)
+SomeExternalAPI::SomeExternalAPI(std::string)
 {
 	// We don't actually care about the location for this example...
 }

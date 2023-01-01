@@ -8,7 +8,7 @@
  *  The original code is copyright (c) 2022, open.mp team and contributors.
  */
 
-#include <string_view>
+#include <string>
 
 // This is just a placeholder for some real world weather lookup API.  We aren't going to bother
 // with a full implementation as this class merely serves as an example of real-world usage.  It
@@ -21,7 +21,7 @@ private:
 
 public:
 	// Initialise this API to find the weather in a real-world location.
-	SomeExternalAPI(std::string_view location);
+	SomeExternalAPI(std::string location);
 
 	// Not `const` because we may get a new weather.
 	int getCurrentWeather();

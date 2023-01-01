@@ -75,7 +75,7 @@ int WeatherRegion::getID() const
 
 // More methods to be used only in this component (internal methods).  Implementation details.
 WeatherRegion::WeatherRegion(StringView name, StringView location)
-	: api_(location)
+	: api_(location.to_string())
 	, currentWeather_(0)
 	, name_(name)
 	, location_(location)
