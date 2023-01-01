@@ -8,25 +8,13 @@
 
 #include <cstdlib>
 
-// This is just a placeholder for some real world weather lookup API.  We aren't going to bother
-// with a full implementation as this class merely serves as an example of real-world usage.  It
-// isn't important to demonstrating the open.mp component SDK.
-class WeatherAPI
+int SomeExternalAPI::getCurrentWeather()
 {
-private:
-	// 10 possibilities:
-	int currentWeather_ = 0;
-
-public:
-	// Not `const` because we may get a new weather.
-	int getCurrentWeather()
+	// 1% chance of randomly selecting a new weather.
+	if (rand() % 100 == 0)
 	{
-		// 1% chance of randomly selecting a new weather.
-		if (rand() % 100 == 0)
-		{
-			// I'm not using `<random>`...
-			currentWeather_ = rand() % 10;
-		}
-		return currentWeather_;
+		// I'm not using `<random>`...
+		currentWeather_ = rand() % 10;
 	}
-};
+	return currentWeather_;
+}

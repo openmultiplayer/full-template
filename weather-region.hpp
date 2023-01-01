@@ -33,22 +33,32 @@ class WeatherRegion final
 	, public NoCopy
 {
 private:
-	WeatherAPI api_;
+	// An interface to some immaginary weather lookup system.  Web API etc.
+	SomeExternalAPI api_;
 	
+	// The last weather loaded from the API, in the API format.
 	int currentWeather_;
-	String name_;
-	String location_;
+
+	// The name of this small area of localised weather.
+	String const name_;
+
+	// The location of this small area of localised weather.
+	String const location_;
 
 public:
 	// Implementations of the various methods from the public API.
-	StringView getName() override;
+	StringView getName() const override;
 
-	StringView getLocation() override;
+	// Get the location.  Public APIs use `StringView` because it is ABI stable.
+	StringView getLocation() const override;
 	
-	bool weatherChanged() override;
+	// Return `true` if the current weather is different to the previous `getWeather` call.
+	bool updateWeather() override;
 	
-	E_WEATHER getWeather() override;
+	// Convert from the API-specific weather format to the component's global format.
+	E_WEATHER getWeather() const override;
 	
+	// Required by anything that is `PoolIDProvider`.
 	int getID() const override;
 
 	// More methods to be used only in this component (internal methods).  Implementation details.
