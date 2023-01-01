@@ -72,18 +72,8 @@ IWeatherRegion* WeatherComponent::getWeatherRegion(StringView name)
 
 IWeatherRegion* WeatherComponent::getWeatherRegion(int id)
 {
-	// Loop over all the created regions.
-	for (auto region : pool_)
-	{
-		// Check if the region matches the ID.
-		if (region->getID() == id)
-		{
-			// This region has a matching ID, return the interface.
-			return region;
-		}
-	}
-	// No matching regions found.
-	return nullptr;
+	// Pools have in-built methods for lookups by ID.
+	return pool_.get(id);
 }
 
 IEventDispatcher<WeatherEventHandler>& WeatherComponent::getEventDispatcher()
