@@ -15,12 +15,12 @@ include_directories(
 add_definitions(-DHAVE_STDINT_H=1)
 
 add_library(${PROJECT_NAME} SHARED
+	api.cpp
 	main.cpp
-	weather-natives.cpp
+	natives.cpp
 	weather-component.cpp
 	weather-extension.cpp
 	weather-region.cpp
-	api.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
