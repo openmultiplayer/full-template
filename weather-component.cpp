@@ -209,6 +209,15 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 }
 
 // More methods to be used only in this component, with more implementation details knowledge.
+WeatherComponent* WeatherComponent::getInstance()
+{
+	// Poor man's `Singleton`.
+	if (instance_ == nullptr)
+	{
+		instance_ = new WeatherComponent();
+	}
+	return instance_;
+}
 
 // When this component is destroyed we need to tell any linked components this it is gone.
 WeatherComponent::~WeatherComponent()

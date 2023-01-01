@@ -53,6 +53,8 @@ private:
 	// Create a store for other components to be informed when the weather changes.
 	DefaultEventDispatcher<WeatherEventHandler> eventDispatcher_;
 
+	inline static WeatherComponent* instance_ = nullptr;
+
 public:
 	// Implementations of the various methods from the public API.
 	IWeatherRegion* createWeatherRegion(StringView name, StringView location) override;
@@ -94,6 +96,7 @@ public:
 	void onTick(Microseconds elapsed, TimePoint now) override;
 	
 	// More methods to be used only in this component, with more implementation details knowledge.
+	static WeatherComponent* getInstance();
 
 	// When this component is destroyed we need to tell any linked components this it is gone.
 	~WeatherComponent();
