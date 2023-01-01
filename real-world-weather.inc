@@ -109,6 +109,35 @@ native bool:RWW_GetLocation(RWW:region, location[], size = sizeof (location));
 
 /**
  * <library>real-world-weather</library>
+ * <summary>Get the string description of a weather type.</summary>
+ * <param name="weather">The weather to get.</param>
+ * <param name="description">The return value for the weather description.</param>
+ * <param name="size">The size of the return array.</param>
+ * <returns>Does this weather type exist?</returns>
+ */
+stock bool:RWW_GetDescription(E_WEATHER:weather, description[], size = sizeof (description))
+{
+	if (E_WEATHER_UNKNOWN < weather <= E_WEATHER_DRIZZLING)
+	{
+		static weatherNames[][] = {
+			"Sunny",
+			"Raining",
+			"Windy",
+			"Snowing",
+			"Sleet",
+			"Cloudy",
+			"Hot",
+			"Foggy",
+			"Stormy",
+			"Drizzling",
+		};
+		return true;
+	}
+	return false;
+}
+
+/**
+ * <library>real-world-weather</library>
  * <param name="region">The ID of the region that changed.</param>
  * <param name="previous">The old weather in this region.</param>
  * <param name="current">The new weather in this region.</param>

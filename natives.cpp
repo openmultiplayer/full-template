@@ -13,7 +13,7 @@
 #include "interface.hpp"
 
 // Contains wrappers for pool lookups from IDs.
-#include "weather-natives.hpp"
+#include "natives.hpp"
 
 // To get the component.
 #include "weather-component.hpp"
@@ -22,7 +22,7 @@
 //
 //   https://github.com/Y-Less/pawn-natives
 //
-SCRIPT_API(RWW_Create, int(String & name, String & location))
+SCRIPT_API(RWW_Create, int(String const& name, String const& location))
 {
 	// Try get a reference to the controlling component.
 	if (auto rww = WeatherComponent::getInstance())

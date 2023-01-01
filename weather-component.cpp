@@ -176,7 +176,7 @@ void WeatherComponent::onAmxUnload(IPawnScript& script)
 void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 {
 	// Check if we need to recheck.
-	if (now > nextUpdate_)
+	if (pawn_ && now > nextUpdate_)
 	{
 		// Loop through all the regions and update their weather.
 		for (IWeatherRegion* region : pool_)
