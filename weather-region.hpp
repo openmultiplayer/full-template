@@ -24,6 +24,7 @@
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
 
+// `final` so we don't need virtual destructors.  Also because we know it isn't inherited.
 class WeatherRegion final
 	// This class is an implementation of the publicly shared `IWeatherRegion` interface.
 	: public IWeatherRegion
@@ -52,9 +53,6 @@ public:
 	// Get the location.  Public APIs use `StringView` because it is ABI stable.
 	StringView getLocation() const override;
 	
-	// Return `true` if the current weather is different to the previous `getWeather` call.
-	bool updateWeather() override;
-	
 	// Convert from the API-specific weather format to the component's global format.
 	E_WEATHER getWeather() const override;
 	
@@ -63,4 +61,7 @@ public:
 
 	// More methods to be used only in this component (internal methods).  Implementation details.
 	WeatherRegion(StringView name, StringView location);
+	
+	// Only this component should update weather, so don't expose this method.
+	bool updateWeather();
 };

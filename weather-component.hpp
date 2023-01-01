@@ -26,7 +26,7 @@
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
 
-// If this data is to be used in other components only share an ABI stable base class.
+// `final` so we don't need virtual destructors.  Also because we know it isn't inherited.
 class WeatherComponent final
 	// This class is an implementation of the publicly shared `IWeatherComponent` interface.
 	: public IWeatherComponent
@@ -46,6 +46,9 @@ private:
 
 	// This is a "pool" - it holds a list of "entities".
 	MarkedPoolStorage<WeatherRegion, IWeatherRegion, 1, 1000> pool_;
+
+	// The next time to update region's weather.
+	TimePoint nextUpdate_ = TimePoint::min();
 
 public:
 	// Implementations of the various methods from the public API.

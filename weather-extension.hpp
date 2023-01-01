@@ -17,7 +17,7 @@
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
 
-// If this data is to be used in other components only share an ABI stable base class.
+// `final` so we don't need virtual destructors.  Also because we know it isn't inherited.
 class WeatherExtension final
 	// This class is an implementation of the publicly shared `IWeatherExtension` interface.
 	: public IWeatherExtension

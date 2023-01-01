@@ -33,14 +33,11 @@ enum class E_WEATHER
 // checkpoints, text draws, or weather regions.
 struct IWeatherRegion
 {
-	// Generic name.
+	// Generic name.  `StringView` is ABI stable.
 	virtual StringView getName() const = 0;
 
 	// Generic location.  Could also be some map coordinates.  `StringView` is ABI stable.
 	virtual StringView getLocation() const = 0;
-
-	// Check for changes in weather.  `StringView` is ABI stable.
-	virtual bool updateWeather() = 0;
 
 	// Get the current weather.
 	virtual E_WEATHER getWeather() const = 0;

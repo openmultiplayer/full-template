@@ -8,6 +8,11 @@
 
 #include <cstdlib>
 
+#include "api.hpp"
+
+ // This is just a placeholder for some real world weather lookup API.  We aren't going to bother
+ // with a full implementation as this class merely serves as an example of real-world usage.  It
+ // isn't important to demonstrating the open.mp component SDK.
 int SomeExternalAPI::getCurrentWeather()
 {
 	// 1% chance of randomly selecting a new weather.

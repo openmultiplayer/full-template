@@ -180,7 +180,26 @@ void WeatherComponent::onAmxUnload(IPawnScript& script)
 // Update event methods.
 void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 {
-		
+	// Check if we need to recheck.
+	if (now > nextUpdate_)
+	{
+		// Loop through all the regions and update their weather.
+		for (IWeatherRegion* region : pool_)
+		{
+			// Call a method on the interface to get the current weather.
+			E_WEATHER prev = region->getWeather();
+			// Call a method on the private implementation to update the weather.
+			bool changed = reinterpret_cast<WeatherRegion*>(region)->updateWeather();
+			// Check if the weather has changed.
+			if (changed)
+			{
+				// The weather has changed.
+				E_WEATHER cur = region->getWeather();
+			}
+		}
+		// Update five times a second.
+		nextUpdate_ = now + std::chrono::milliseconds(200);
+	}
 }
 	
 // More methods to be used only in this component, with more implementation details knowledge.
