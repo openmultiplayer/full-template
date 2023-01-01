@@ -195,6 +195,15 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 			{
 				// The weather has changed.
 				E_WEATHER cur = region->getWeather();
+				// Tell pawn.
+				int id = region->getID();
+				for (IPawnScript* script : pawn_->sideScripts())
+				{
+					// `forward OnWeatherChange(region, E_WEATHER:prev, E_WEATHER:cur);`
+					script->Call("OnWeatherChange", DefaultReturnValue_False, id, prev, cur);
+				}
+				// Call in the gamemode after all filterscripts.
+				pawn_->mainScript()->Call("OnWeatherChange", DefaultReturnValue_False, id, prev, cur);
 			}
 		}
 		// Update five times a second.
