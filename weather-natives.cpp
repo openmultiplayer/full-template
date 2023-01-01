@@ -9,9 +9,31 @@
 // Required for most of open.mp.
 #include <sdk.hpp>
 
-// This is the private implementation of the public interface.  We must know the interface.
+// Include the globally shared definitions for this component.
 #include "interface.hpp"
 
-// Import open.mp structures that aren't ABI safe.
-using namespace Impl;
+// Contains wrappers for pool lookups from IDs.
+#include "weather-natives.hpp"
 
+// To get the component.
+#include "weather-component.hpp"
+
+// `SCRIPT_API` is an enhanced wrapper around the old *pawn-natives* system:
+//
+//   https://github.com/Y-Less/pawn-natives
+//
+SCRIPT_API(RWW_Create, int(String & name, String & location))
+{
+	// Try get a reference to the controlling component.
+	if (auto rww = WeatherComponent::getInstance())
+	{
+		// Call a method on the component.
+		if (auto ret = rww->createWeatherRegion(name, location))
+		{
+			// Pawn wants the ID, not the pointer.
+			return ret->getID();
+		}
+	}
+	// Natives return `0`/`false` by default if parameter lookups fail.
+	return 0;
+}
