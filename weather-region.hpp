@@ -20,7 +20,6 @@
 // This entity holds server data, but must use an external service for weather reporting.
 #include "api.hpp"
 
-
 // Import open.mp structures that aren't ABI safe.
 using namespace Impl;
 

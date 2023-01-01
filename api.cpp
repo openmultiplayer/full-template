@@ -10,6 +10,11 @@
 
 #include "api.hpp"
 
+SomeExternalAPI::SomeExternalAPI(std::string_view)
+{
+	// We don't actually care about the location for this example...
+}
+
  // This is just a placeholder for some real world weather lookup API.  We aren't going to bother
  // with a full implementation as this class merely serves as an example of real-world usage.  It
  // isn't important to demonstrating the open.mp component SDK.

@@ -29,7 +29,7 @@ IWeatherRegion* WeatherComponent::createWeatherRegion(StringView name, StringVie
 	// construct weather regions.  All other components see merely the public interface.
 	return pool_.emplace(name, location);
 }
-	
+
 bool WeatherComponent::destroyWeatherRegion(IWeatherRegion* region)
 {
 	// Since we are in the component, we don't need to exclusively deal with the external API.
@@ -53,7 +53,7 @@ bool WeatherComponent::destroyWeatherRegion(IWeatherRegion* region)
 	// Success!
 	return true;
 }
-	
+
 IWeatherRegion* WeatherComponent::getWeatherRegion(StringView name)
 {
 	// Loop over all the created regions.
@@ -153,14 +153,14 @@ void WeatherComponent::reset()
 {
 	// Resets data when the mode changes.
 }
-	
+
 // Connect event methods.
 void WeatherComponent::onPlayerConnect(IPlayer& player)
 {
 	// Allocate a new copy of the extension and register it for `queryExtension` lookups.
 	player.addExtension(new WeatherExtension(), true);
 }
-	
+
 // Pawn event methods.
 void WeatherComponent::onAmxLoad(IPawnScript& script)
 {
@@ -207,7 +207,7 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 		nextUpdate_ = now + std::chrono::milliseconds(200);
 	}
 }
-	
+
 // More methods to be used only in this component, with more implementation details knowledge.
 
 // When this component is destroyed we need to tell any linked components this it is gone.
