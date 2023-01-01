@@ -204,7 +204,7 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 			}
 		}
 		// Update five times a second.
-		nextUpdate_ = now + std::chrono::milliseconds(200);
+		nextUpdate_ += std::chrono::milliseconds(200);
 	}
 }
 
