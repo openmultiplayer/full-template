@@ -23,7 +23,8 @@ public OnFilterScriptInit()
 	{
 		printf("Failed to create LV region");
 	}
-	if (!(gRegionSF = RWW_Create("San Fierro", "America/San Fransisco")))
+	gRegionSF = RWW_Create("San Fierro", "America/San Fransisco");
+	if (gRegionSF == INVALID_RWW_REGION)
 	{
 		printf("Failed to create SF region");
 	}
@@ -36,14 +37,6 @@ public OnFilterScriptExit()
 	RWW_Destroy(gRegionLV);
 	RWW_Destroy(gRegionLS);
 	RWW_Destroy(gRegionSF);
-	return 1;
-}
-
-new RWW:gPlayerRegion[MAX_PLAYERS];
-
-public OnPlayerDisconnect(playerid, reason)
-{
-	gPlayerRegion[playerid] = INVALID_RWW_REGION;
 	return 1;
 }
 
@@ -70,18 +63,18 @@ DeterminePlayerRegion(playerid)
 	switch (random(3))
 	{
 	case 0:
-		gPlayerRegion[playerid] = gRegionLV;
+		RWW_SetPlayerRegion(playerid, gRegionLV);
 	case 1:
-		gPlayerRegion[playerid] = gRegionLS;
+		RWW_SetPlayerRegion(playerid, gRegionLS);
 	case 2:
-		gPlayerRegion[playerid] = gRegionSF;
+		RWW_SetPlayerRegion(playerid, gRegionSF);
 	}
 }
 
 public OnPlayerSpawn(playerid)
 {
 	DeterminePlayerRegion(playerid);
-	SetPlayerRealWeather(playerid, RWW_GetWeather(gPlayerRegion[playerid]));
+	SetPlayerRealWeather(playerid, RWW_GetWeather(RWW_GetPlayerRegion(playerid)));
 	return 0;
 }
 
@@ -94,7 +87,7 @@ public OnWeatherChange(RWW:region, E_WEATHER:previous, E_WEATHER:current)
 	printf("Region %s changed weather from %s to %s", name, from, to);
 	for (new i = 0; i != MAX_PLAYERS; ++i)
 	{
-		if (gPlayerRegion[i] == region)
+		if (RWW_GetPlayerRegion(i) == region)
 		{
 			SetPlayerRealWeather(i, current);
 		}

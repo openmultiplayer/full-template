@@ -145,6 +145,22 @@ stock bool:RWW_GetDescription(E_WEATHER:weather, description[], size = sizeof (d
 
 /**
  * <library>real-world-weather</library>
+ * <summary>Store where the player is in their extension data.</summary>
+ * <param name="playerid">The player to be marked as in this region.</param>
+ */
+native RWW:RWW_GetPlayerRegion(playerid);
+
+/**
+ * <library>real-world-weather</library>
+ * <summary>Store where the player is in their extension data.</summary>
+ * <param name="playerid">The player to be marked as in this region.</param>
+ * <param name="region">The ID of the region to set them in.</param>
+ * <returns>Player is connected and the region exists.</returns>
+ */
+native bool:RWW_SetPlayerRegion(playerid, RWW:region);
+
+/**
+ * <library>real-world-weather</library>
  * <param name="region">The ID of the region that changed.</param>
  * <param name="previous">The old weather in this region.</param>
  * <param name="current">The new weather in this region.</param>

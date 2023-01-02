@@ -74,3 +74,32 @@ SCRIPT_API(RWW_GetWeather, int(IWeatherRegion& region))
 {
 	return static_cast<int>(region.getWeather());
 }
+
+// `IPlayer&` lookup is in-built.
+SCRIPT_API(RWW_SetPlayerRegion, bool(IPlayer& player, IWeatherRegion& region))
+{
+	// Get the extension data for this player, created when they connected.
+	if (auto data = queryExtension<IWeatherExtension>(player))
+	{
+		data->setWeatherRegion(&region);
+		// Player, extension data, and region all exist.
+		return true;
+	}
+	// Extension data doesn't exist, failed to set the region.
+	return false;
+}
+
+// Most SDK functions return pointers/references.  Here we convert it to an ID.
+SCRIPT_API(RWW_GetPlayerRegion, int(IPlayer& player))
+{
+	// Get the extension data for this player, created when they connected.
+	if (auto data = queryExtension<IWeatherExtension>(player))
+	{
+		// Get their region if they are in one.
+		if (auto region = data->getWeatherRegion())
+		{
+			return region->getID();
+		}
+	}
+	return 0;
+}
