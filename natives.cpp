@@ -15,9 +15,6 @@
 // Contains wrappers for pool lookups from IDs.
 #include "natives.hpp"
 
-// To get the component.
-#include "weather-component.hpp"
-
 // `SCRIPT_API` is an enhanced wrapper around the old *pawn-natives* system:
 //
 //   https://github.com/Y-Less/pawn-natives
@@ -36,4 +33,44 @@ SCRIPT_API(RWW_Create, int(String const& name, String const& location))
 	}
 	// Natives return `0`/`false` by default if parameter lookups fail.
 	return 0;
+}
+
+SCRIPT_API(RWW_Destroy, bool(IWeatherRegion& region))
+{
+	// Try get a reference to the controlling component.
+	if (auto rww = WeatherComponent::getInstance())
+	{
+		rww->destroyWeatherRegion(&region);
+		// Using the region here is use-after-free.
+		return true;
+	}
+	return false;
+}
+
+// `IWeatherRegion&` calls the parameter lookup from ID and can auto-fail.
+SCRIPT_API(RWW_GetName, bool(IWeatherRegion& region, OutputOnlyString& name))
+{
+	name = region.getName();
+	// Natives return `0`/`false` by default if parameter lookups fail.
+	return true;
+}
+
+// `OutputOnlyString` translates in pawn to a `string/length` pair.
+SCRIPT_API(RWW_GetLocation, bool(IWeatherRegion& region, OutputOnlyString& name))
+{
+	name = region.getLocation();
+	// Natives return `0`/`false` by default if parameter lookups fail.
+	return true;
+}
+
+// Look up the ID, if it doesn't fail the function will be called.
+SCRIPT_API(RWW_IsValid, bool(IWeatherRegion&))
+{
+	// Merely calling this function is enough to validate the region ID exists.
+	return true;
+}
+
+SCRIPT_API(RWW_GetWeather, int(IWeatherRegion& region))
+{
+	return static_cast<int>(region.getWeather());
 }

@@ -29,6 +29,11 @@
 
 #pragma tabsize 4
 
+/**
+ * <library>real-world-weather</library>
+ */
+const RWW:INVALID_RWW_REGION = RWW:0;
+
 /// <p/>
 /**
  * <library>real-world-weather</library>
@@ -129,8 +134,10 @@ stock bool:RWW_GetDescription(E_WEATHER:weather, description[], size = sizeof (d
 			"Hot",
 			"Foggy",
 			"Stormy",
-			"Drizzling",
+			"Drizzling"
 		};
+		description[0] = '\0';
+		strcat(description, weatherNames[_:weather - 1], size);
 		return true;
 	}
 	return false;

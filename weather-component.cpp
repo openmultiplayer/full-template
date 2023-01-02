@@ -200,7 +200,10 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 					script->Call("OnWeatherChange", DefaultReturnValue_False, id, prev, cur);
 				}
 				// Call in the gamemode after all filterscripts.
-				pawn_->mainScript()->Call("OnWeatherChange", DefaultReturnValue_False, id, prev, cur);
+				if (auto script = pawn_->mainScript())
+				{
+					script->Call("OnWeatherChange", DefaultReturnValue_False, id, prev, cur);
+				}
 			}
 		}
 		// Update five times a second.
