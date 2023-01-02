@@ -50,7 +50,7 @@ struct IWeatherRegion
 struct IWeatherExtension : IExtension
 {
 	// Visit https://open.mp/uid to generate a new unique ID (different to the component UID).
-	PROVIDE_EXT_UID(5/* UID GOES HERE */);
+	PROVIDE_EXT_UID(/* UID GOES HERE */);
 
 	// Public methods to get and set this player's weather region.
 	virtual IWeatherRegion* getWeatherRegion() = 0;
@@ -69,7 +69,7 @@ struct WeatherEventHandler
 struct IWeatherComponent : IComponent
 {
 	// Visit https://open.mp/uid to generate a new unique ID (different to the extension UID).
-	PROVIDE_UID(6/* UID GOES HERE */);
+	PROVIDE_UID(/* UID GOES HERE */);
 
 	// Public methods to get and set this player's weather region.
 	virtual IWeatherRegion* createWeatherRegion(StringView name, StringView location) = 0;
