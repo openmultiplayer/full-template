@@ -85,13 +85,6 @@ public OnWeatherChange(RWW:region, E_WEATHER:previous, E_WEATHER:current)
 	RWW_GetDescription(previous, from);
 	RWW_GetDescription(current, to);
 	printf("Region %s changed weather from %s to %s", name, from, to);
-	for (new i = 0; i != MAX_PLAYERS; ++i)
-	{
-		if (RWW_GetPlayerRegion(i) == region)
-		{
-			SetPlayerRealWeather(i, current);
-		}
-	}
 	return 1;
 }
 

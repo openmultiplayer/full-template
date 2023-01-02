@@ -204,6 +204,43 @@ void WeatherComponent::onTick(Microseconds elapsed, TimePoint now)
 				{
 					script->Call("OnWeatherChange", DefaultReturnValue_False, id, prev, cur);
 				}
+				// Update all players in this region.
+				for (IPlayer* player : core_->getPlayers().entries())
+				{
+					// Get the extension data for this player, which stores their region.
+					if (IWeatherExtension* data = queryExtension<IWeatherExtension>(player))
+					{
+						// Are they in the current one?
+						if (data->getWeatherRegion() == region)
+						{
+							// Convert the component weather ID to an in-game ID.
+							switch (cur)
+							{
+							case E_WEATHER::SUNNY:
+							case E_WEATHER::HOT:
+								// And set their weather.
+								player->setWeather(11);
+								break;
+							case E_WEATHER::RAINING:
+							case E_WEATHER::STORMY:
+							case E_WEATHER::DRIZZLING:
+								player->setWeather(8);
+								break;
+							case E_WEATHER::WINDY:
+							case E_WEATHER::CLOUDY:
+							case E_WEATHER::FOGGY:
+								player->setWeather(12);
+								break;
+							case E_WEATHER::SNOWING:
+							case E_WEATHER::SLEET:
+								player->setWeather(19);
+								break;
+							default:
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 		// Update five times a second.

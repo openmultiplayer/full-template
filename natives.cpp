@@ -81,8 +81,11 @@ SCRIPT_API(RWW_SetPlayerRegion, bool(IPlayer& player, IWeatherRegion& region))
 	// Get the extension data for this player, created when they connected.
 	if (auto data = queryExtension<IWeatherExtension>(player))
 	{
-		data->setWeatherRegion(&region);
 		// Player, extension data, and region all exist.
+		data->setWeatherRegion(&region);
+		// In a full implementation we should also update their weather here, but that's done in
+		// `WeatherComponent::onTick` and in the example script just to demonstrate a greater
+		// variety of features.
 		return true;
 	}
 	// Extension data doesn't exist, failed to set the region.
