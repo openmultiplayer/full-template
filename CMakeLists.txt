@@ -12,7 +12,10 @@ include_directories(
 	pawn/source/linux
 )
 
-add_definitions(-DHAVE_STDINT_H=1)
+add_definitions(
+	-DHAVE_STDINT_H=1
+	-DPAWN_CELL_SIZE=32
+)
 
 add_library(${PROJECT_NAME} SHARED
 	api.cpp
