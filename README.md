@@ -22,9 +22,9 @@ Visual Studio needs the `Desktop development with C++` workload with the `MSVC v
 
 ```bash
 # With HTTPS:
-git clone --recursive https://github.com/openmultiplayer/basic-template
+git clone --recursive https://github.com/openmultiplayer/full-template
 # With SSH:
-git clone --recursive git@github.com:openmultiplayer/basic-template
+git clone --recursive git@github.com:openmultiplayer/full-template
 ```
 
 Note the use of the `--recursive` argument, because this repository contains submodules.  A useful setting when cloning recursive repos is:
